@@ -1,0 +1,18 @@
+{
+  "name": "supra-buy-bot",
+  "version": "2.0.0",
+  "description": "Monitoriza compras (SwapEvents) na Dexlyn/Supra e envia notificações para o Telegram",
+  "main": "src/buybot.js",
+  "scripts": {
+    "start": "node src/buybot.js",
+    "dev": "nodemon src/buybot.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "node-telegram-bot-api": "^0.64.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
