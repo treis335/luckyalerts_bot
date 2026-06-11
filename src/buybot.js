@@ -992,37 +992,36 @@ function isFatalChatError(err) {
 
 async function sendNotification(chatId, buyConfig, type, primaryToken, primaryAmount, secondaryToken, secondaryAmount, usdValue) {
   const amountNum = parseFloat(primaryAmount);
-  const emojiCount = Math.min(Math.floor(amountNum / buyConfig.emojiBaseAmount), 10);
-  const emojiLine = emojiCount > 0 ? buyConfig.emoji.repeat(emojiCount) + '\n\n' : '';
+  const emojiCount = Math.min(Math.floor(amountNum / buyConfig.emojiBaseAmount), 35);
+  const emojiStr = emojiCount > 0 ? buyConfig.emoji.repeat(emojiCount) : '';
 
-  let message = '';
-  if (type === 'BUY') {
-    message = `💰 <b>NEW BUY!</b> 💰\n\n${emojiLine}`;
-    message += `🔥 <b>Bought:</b> ${primaryAmount} ${primaryToken.name}\n`;
-  } else {
-    message = `📉 <b>NEW SELL!</b> 📉\n\n${emojiLine}`;
-    message += `🔥 <b>Sold:</b> ${primaryAmount} ${primaryToken.name}\n`;
-  }
-
-  if (secondaryToken.typeTag === SUPRA_COIN_TYPE) {
-    message += `💵 <b>Paid/Received:</b> $${usdValue.toFixed(2)} (${secondaryAmount} ${secondaryToken.name})\n`;
-  } else {
-    message += `💵 <b>Paid/Received:</b> ${secondaryAmount} ${secondaryToken.name}\n`;
-  }
-
-  try {
-    const { price } = await getTokenPriceAndMC(primaryToken.typeTag);
-    message += `💸 <b>Price:</b> $${price.toFixed(6)}\n`;
-  } catch (e) {}
-
+  let marketCapStr = '';
   if (primaryToken.supply > 0) {
     try {
       const { marketCap } = await getTokenPriceAndMC(primaryToken.typeTag);
-      if (marketCap !== null) message += `🚀 <b>Market Cap:</b> $${marketCap.toFixed(2)}\n`;
+      if (marketCap !== null) {
+        // Format market cap with commas, no decimals if >= 1
+        marketCapStr = marketCap >= 1
+          ? Math.round(marketCap).toLocaleString('en-US')
+          : marketCap.toFixed(2);
+      }
     } catch (e) {}
   }
 
-  message += `\n<i>LuckyPowerBots</i> 🍀`;
+  let message = '';
+  if (type === 'BUY') {
+    message += `🟢 A new buy of <b>${primaryToken.name}</b> has been detected !\n\n ${emojiStr}\n\n`;
+    message += `💸 <b>Spent:</b> ${secondaryAmount} ${secondaryToken.name}\n\n`;
+    message += `💰 <b>Bought:</b> ${primaryAmount} ${primaryToken.name}\n\n`;
+    if (marketCapStr) message += `🏦 <b>Market Cap:</b> ${marketCapStr} USD\n\n`;
+  } else {
+    message += `🔴 A new sell of <b>${primaryToken.name}</b> has been detected !${emojiStr}\n\n`;
+    message += `💰 <b>Sold:</b> ${primaryAmount} ${primaryToken.name}\n\n`;
+    message += `💸 <b>Received:</b> ${secondaryAmount} ${secondaryToken.name}\n\n`;
+    if (marketCapStr) message += `🏦 <b>Market Cap:</b> ${marketCapStr} USD\n\n`;
+  }
+
+  message += `<i>LuckyPowerBots</i> 🍀`;
 
   const inlineKeyboard = {
     inline_keyboard: [[
