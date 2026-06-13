@@ -12,11 +12,11 @@ const API_BASE_URL = 'https://rpc-mainnet.supra.com/rpc/v1';
 const CURVE_TYPE = '0xdc694898dff98a1b0447e0992d0413e123ea80da1021d464a4fbaf0265870d8::curves::Uncorrelated';
 const MODULE_ADDRESS = '0xdc694898dff98a1b0447e0992d0413e123ea80da1021d464a4fbaf0265870d8';
 const SUPRA_COIN_TYPE = '0x1::supra_coin::SupraCoin';
-const DEXUSDC_TYPE = '0x8f7d16ade319b0fce368ca6cdb98589c4527ce7f5b51e544a9e68e719934458b::hyper_coin::DexlynUSDC';
+const DEXUSDC_TYPE = '0x9176f70f125199a3e3d5549ce795a8e906eed75901d535ded623802f15ae3637::cdp_multi::CASH';
 const SPIKE_TYPE = '0x0fec116479f1fd3cb9732cc768e6061b0e45b178a610b9bc23c2143a6493e794::memecoins::SPIKE';
 
 const SUPRA_DECIMALS = 1e8;
-const DEXUSDC_DECIMALS = 1e6;
+const DEXUSDC_DECIMALS = 1e8;
 const DEFAULT_DECIMALS = 1e6;
 const SPIKE_DECIMALS = 1e3;
 const SUPRA_SUPPLY = 1e11;
